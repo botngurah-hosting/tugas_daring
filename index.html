@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Pengumpulan Tugas Siswa</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome 6 Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="site-wrapper">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <span class="school-name" id="schoolNameHeader"
+              >SD Negeri 1 Nusantara</span
+            >
+            <span class="portal-tag">E-Learning & Pengumpulan Tugas</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="admin.html" class="btn-portal-guru">
+            <i class="fa-solid fa-user-tie"></i> Portal Guru
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero & Step Indicator Banner -->
+    <section class="hero-banner">
+      <div class="hero-container">
+        <div class="hero-content">
+          <span class="hero-badge"
+            ><i class="fa-solid fa-sparkles"></i> Pembelajaran Daring
+            Modern</span
+          >
+          <h1 class="hero-title">
+            Kumpulkan Tugas Sekolah Dengan Mudah & Cepat
+          </h1>
+          <p class="hero-subtitle">
+            Pilih kelas dan namamu untuk melihat daftar tugas serta mengunggah
+            lembar kerja siswa secara langsung.
+          </p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="step-tracker">
+          <div class="step-item active" id="stepIndicator1">
+            <div class="step-icon"><i class="fa-solid fa-user-check"></i></div>
+            <div class="step-label">1. Pilih Nama</div>
+          </div>
+          <div class="step-line" id="stepLine1"></div>
+          <div class="step-item" id="stepIndicator2">
+            <div class="step-icon"><i class="fa-solid fa-book-open"></i></div>
+            <div class="step-label">2. Pilih Tugas</div>
+          </div>
+          <div class="step-line" id="stepLine2"></div>
+          <div class="step-item" id="stepIndicator3">
+            <div class="step-icon">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <div class="step-label">3. Unggah File</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Container -->
+    <main class="main-container">
+      <!-- STEP 1: Form Identitas Siswa -->
+      <section class="card-section" id="identitySection">
+        <div class="card-header-custom">
+          <div class="header-icon primary">
+            <i class="fa-solid fa-id-card"></i>
+          </div>
+          <div>
+            <h2>Verifikasi Identitas Siswa</h2>
+            <p>
+              Pilih kelas terlebih dahulu untuk menampilkan daftar nama siswa.
+            </p>
+          </div>
+        </div>
+
+        <form id="identityForm" class="form-modern">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="selectKelas">
+                <i class="fa-solid fa-chalkboard-user"></i> 1. Pilih Kelas
+              </label>
+              <div class="select-wrapper">
+                <select id="selectKelas" required>
+                  <option value="">-- Memuat Daftar Kelas --</option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="selectSiswa">
+                <i class="fa-solid fa-user-graduate"></i> 2. Pilih Nama Siswa
+              </label>
+              <div class="select-wrapper">
+                <select id="selectSiswa" disabled required>
+                  <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-block btn-lg"
+            id="btnStudentLogin"
+            disabled
+          >
+            <span>Masuk & Lihat Tugas</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div id="identityAlert" class="alert-container"></div>
+      </section>
+
+      <!-- STEP 2: List Tugas Siswa -->
+      <section class="card-section" id="taskSection" style="display: none">
+        <div class="profile-bar">
+          <div class="user-info-group">
+            <div class="user-avatar">
+              <i class="fa-solid fa-child-reaching"></i>
+            </div>
+            <div>
+              <h2 id="welcomeStudentTitle">Halo, Siswa</h2>
+              <div class="user-badges">
+                <span class="user-badge-item" id="studentClassBadge">
+                  <i class="fa-solid fa-school"></i> Kelas -
+                </span>
+                <span
+                  class="user-badge-item"
+                  id="studentNisBadge"
+                  style="display: none"
+                >
+                  <i class="fa-solid fa-hashtag"></i> NIS: -
+                </span>
+              </div>
+            </div>
+          </div>
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            id="btnChangeIdentity"
+          >
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Ganti Identitas
+          </button>
+        </div>
+
+        <div class="section-title-group">
+          <h3><i class="fa-solid fa-list-check"></i> Daftar Tugas Tersedia</h3>
+          <p>
+            Pilih salah satu tugas di bawah ini untuk melihat detail,
+            mengumpulkan, atau membatalkan kiriman file.
+          </p>
+        </div>
+
+        <div class="task-grid" id="taskListContainer">
+          <!-- Card Tugas di-render via JS -->
+        </div>
+      </section>
+
+      <!-- STEP 3: Form Upload File Tugas -->
+      <section class="card-section" id="uploadSection" style="display: none">
+        <button class="btn btn-text-back" id="btnBackToTasks">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Tugas
+        </button>
+
+        <div class="upload-task-header">
+          <div class="task-icon-badge">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <div>
+            <h2 id="uploadTaskTitle">Judul Tugas</h2>
+            <p id="uploadTaskDesc" class="task-desc-text"></p>
+          </div>
+        </div>
+
+        <!-- Instruction Banner -->
+        <div class="instruction-box">
+          <div class="instruction-title">
+            <i class="fa-solid fa-circle-info"></i> Petunjuk Pengumpulan:
+          </div>
+          <ul>
+            <li>Maksimal <strong>3 file</strong> per sekali pengumpulan.</li>
+            <li>
+              Batas ukuran per file max <strong>25 MB</strong> (Total max
+              <strong>50 MB</strong>).
+            </li>
+            <li>
+              Untuk tugas video, gunakan resolusi sedang (720p/HD) agar proses
+              unggah lancar.
+            </li>
+          </ul>
+        </div>
+
+        <form id="uploadForm" class="form-modern">
+          <input type="hidden" id="currentTaskId" />
+          <input type="hidden" id="currentFolderId" />
+
+          <!-- Drag & Drop Zone -->
+          <div class="form-group">
+            <label
+              ><i class="fa-solid fa-paperclip"></i> Unggah File Tugas</label
+            >
+            <div class="dropzone-area" id="dropzoneArea">
+              <input
+                type="file"
+                id="inputFile"
+                multiple
+                class="file-input-hidden"
+              />
+              <div class="dropzone-content">
+                <div class="dropzone-icon">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <div class="dropzone-text">
+                  <span class="dropzone-prompt">Klik di sini</span> atau seret
+                  file ke area ini
+                </div>
+                <p class="dropzone-hint">
+                  Mendukung Foto, Dokumen PDF/Word, Audio, dan Video
+                </p>
+              </div>
+            </div>
+
+            <!-- Selected File Chips List -->
+            <div id="fileListPreview" class="file-preview-grid"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputKeterangan">
+              <i class="fa-solid fa-comment-dots"></i> Catatan untuk Guru
+              (Opsional)
+            </label>
+            <textarea
+              id="inputKeterangan"
+              rows="3"
+              placeholder="Tulis catatan atau pesan singkat jika ada..."
+            ></textarea>
+          </div>
+
+          <!-- Progress Bar -->
+          <div
+            id="uploadProgressContainer"
+            class="progress-wrapper"
+            style="display: none"
+          >
+            <div class="progress-info">
+              <span class="progress-status"
+                ><i class="fa-solid fa-spinner fa-spin"></i> Mengunggah
+                file...</span
+              >
+              <span class="progress-percentage" id="progressText">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-success btn-block btn-lg"
+            id="btnSubmitTask"
+          >
+            <i class="fa-solid fa-paper-plane"></i> Kirim Tugas Sekarang
+          </button>
+        </form>
+
+        <div id="uploadStatusAlert" class="alert-container"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <p>
+          &copy; 2026 Portal Pembelajaran Daring. Terintegrasi dengan Google
+          Drive & Google Sheets.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/student.js"></script>
+  </body>
+</html>

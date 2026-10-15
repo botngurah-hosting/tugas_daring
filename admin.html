@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Guru - Dashboard Pengelolaan Tugas</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome 6 Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="site-wrapper">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <div class="brand-text">
+            <span class="school-name">Portal Guru & Admin</span>
+            <span class="portal-tag">Sistem Manajemen Pengumpulan Tugas</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html" class="btn-portal-guru">
+            <i class="fa-solid fa-graduation-cap"></i> Portal Siswa
+          </a>
+          <button
+            id="btnLogout"
+            class="btn btn-outline-secondary btn-sm"
+            style="display: none; margin-left: 0.5rem"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner" style="padding-bottom: 2.5rem">
+      <div class="hero-container">
+        <div class="hero-content" style="margin-bottom: 0">
+          <span class="hero-badge"
+            ><i class="fa-solid fa-shield-halved"></i> Modul Akses Khusus
+            Pengajar</span
+          >
+          <h1 class="hero-title">Dashboard Pengelolaan Tugas Sekolah</h1>
+          <p class="hero-subtitle">
+            Buat tugas baru, edit, hapus, pantau pengumpulan siswa, serta kelola
+            folder penyimpanan Google Drive secara real-time.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Container -->
+    <main class="main-container">
+      <!-- Form Login Guru SD -->
+      <section
+        class="card-section"
+        id="loginCard"
+        style="max-width: 440px; margin: 0 auto"
+      >
+        <div
+          class="card-header-custom"
+          style="
+            justify-content: center;
+            text-align: center;
+            border-bottom: none;
+            padding-bottom: 0;
+          "
+        >
+          <div>
+            <h2>
+              <i
+                class="fa-solid fa-lock"
+                style="color: var(--primary-600); margin-right: 0.4rem"
+              ></i>
+              Login Portal Guru
+            </h2>
+            <p>Pilih akun pengajar dan masukkan password Anda.</p>
+          </div>
+        </div>
+
+        <form id="loginForm" class="form-modern">
+          <div class="form-group">
+            <label for="adminUsername"
+              ><i class="fa-solid fa-user-shield"></i> Pilih Peran Guru /
+              Akun</label
+            >
+            <div class="select-wrapper">
+              <select id="adminUsername" required>
+                <option value="">-- Pilih Akun Pengajar --</option>
+                <optgroup label="Guru Kelas (Wali Kelas SD)">
+                  <option value="guru_kelas_1">Guru Kelas 1</option>
+                  <option value="guru_kelas_2">Guru Kelas 2</option>
+                  <option value="guru_kelas_3">Guru Kelas 3</option>
+                  <option value="guru_kelas_4">Guru Kelas 4</option>
+                  <option value="guru_kelas_5">Guru Kelas 5</option>
+                  <option value="guru_kelas_6">Guru Kelas 6</option>
+                </optgroup>
+                <optgroup label="Guru Mata Pelajaran">
+                  <option value="guru_pjok">Guru PJOK / Olahraga</option>
+                  <option value="guru_agama">Guru Agama</option>
+                </optgroup>
+                <optgroup label="Administrator">
+                  <option value="admin">Administrator Sekolah</option>
+                </optgroup>
+              </select>
+              <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="adminPassword"
+              ><i class="fa-solid fa-key"></i> Password Anda</label
+            >
+            <input
+              type="password"
+              id="adminPassword"
+              placeholder="Masukkan password akun"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Dashboard
+          </button>
+        </form>
+
+        <div id="loginAlert" class="alert-container"></div>
+      </section>
+
+      <!-- Dashboard Utama Admin/Guru -->
+      <div id="dashboardSection" style="display: none">
+        <!-- Card Statistik Storage -->
+        <section class="card-section">
+          <div class="card-header-custom">
+            <div class="header-icon primary">
+              <i class="fa-solid fa-hard-drive"></i>
+            </div>
+            <div>
+              <h2>Kapasitas Penyimpanan Google Drive</h2>
+              <p id="storageText">
+                Memuat indikator penggunaan kuota server...
+              </p>
+            </div>
+          </div>
+          <div class="progress-bar-bg" style="height: 14px">
+            <div class="progress-bar-fill" id="storageProgressBar"></div>
+          </div>
+        </section>
+
+        <!-- Form Buat Tugas Baru -->
+        <section class="card-section">
+          <div class="card-header-custom">
+            <div class="header-icon primary">
+              <i class="fa-solid fa-folder-plus"></i>
+            </div>
+            <div>
+              <h2>Buat Tugas Baru</h2>
+              <p>
+                Sistem akan otomatis membuatkan folder tugas khusus di Google
+                Drive induk.
+              </p>
+            </div>
+          </div>
+
+          <form id="createTaskForm" class="form-modern">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="tanggalTugas"
+                  ><i class="fa-regular fa-calendar-check"></i> Tanggal
+                  Tugas</label
+                >
+                <input type="date" id="tanggalTugas" required />
+              </div>
+
+              <div class="form-group">
+                <label for="kelasTujuan"
+                  ><i class="fa-solid fa-school"></i> Kelas Tujuan</label
+                >
+                <div class="select-wrapper">
+                  <select id="kelasTujuan" required></select>
+                  <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="judulTugas"
+                ><i class="fa-solid fa-pen-nib"></i> Judul Tugas</label
+              >
+              <input
+                type="text"
+                id="judulTugas"
+                placeholder="Contoh: Latihan Soal Matematika Bab 1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="deskripsiTugas"
+                ><i class="fa-solid fa-align-left"></i> Instruksi / Deskripsi
+                Tugas</label
+              >
+              <textarea
+                id="deskripsiTugas"
+                rows="3"
+                placeholder="Tuliskan petunjuk pengerjaan tugas secara rinci untuk siswa..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="deadlineTugas"
+                ><i class="fa-regular fa-clock"></i> Batas Akhir Pengumpulan
+                (Deadline)</label
+              >
+              <input type="datetime-local" id="deadlineTugas" required />
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-success btn-lg"
+              id="btnSaveTask"
+            >
+              <i class="fa-solid fa-plus-circle"></i> Simpan & Buat Folder
+              Google Drive
+            </button>
+          </form>
+
+          <div id="createTaskAlert" class="alert-container"></div>
+        </section>
+
+        <!-- Tabel Daftar Tugas -->
+        <section class="card-section">
+          <div class="section-title-group">
+            <h3>
+              <i class="fa-solid fa-list-check"></i> Daftar Tugas Yang Telah
+              Dibuat
+            </h3>
+          </div>
+
+          <div class="table-responsive-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tanggal</th>
+                  <th>Judul Tugas</th>
+                  <th>Kelas</th>
+                  <th>Deadline</th>
+                  <th>Folder Drive</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="taskTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tabel Daftar Pengumpulan Tugas -->
+        <section class="card-section">
+          <div class="section-title-group">
+            <h3>
+              <i class="fa-solid fa-file-arrow-up"></i> Daftar Pengumpulan Tugas
+              Siswa
+            </h3>
+          </div>
+
+          <div class="table-responsive-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Waktu Kirim</th>
+                  <th>Nama Siswa</th>
+                  <th>Kelas</th>
+                  <th>Nama File</th>
+                  <th>Ukuran</th>
+                  <th>File Drive</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="submissionTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- MODAL EDIT TUGAS -->
+    <div id="editTaskModal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-pen-to-square"></i> Edit Detail Tugas</h3>
+          <button
+            type="button"
+            class="btn-close-modal"
+            onclick="closeEditModal()"
+          >
+            &times;
+          </button>
+        </div>
+        <form id="editTaskForm" class="form-modern">
+          <input type="hidden" id="editTaskId" />
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="editTanggalTugas">Tanggal Tugas</label>
+              <input type="date" id="editTanggalTugas" required />
+            </div>
+            <div class="form-group">
+              <label for="editKelasTujuan">Kelas Tujuan</label>
+              <div class="select-wrapper">
+                <select id="editKelasTujuan" required></select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="editJudulTugas">Judul Tugas</label>
+            <input type="text" id="editJudulTugas" required />
+          </div>
+
+          <div class="form-group">
+            <label for="editDeskripsiTugas">Deskripsi / Instruksi</label>
+            <textarea id="editDeskripsiTugas" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="editDeadlineTugas">Batas Akhir (Deadline)</label>
+            <input type="datetime-local" id="editDeadlineTugas" required />
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 0.5rem;
+              justify-content: flex-end;
+              margin-top: 1rem;
+            "
+          >
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              onclick="closeEditModal()"
+            >
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary" id="btnUpdateTask">
+              Simpan Perubahan
+            </button>
+          </div>
+        </form>
+        <div
+          id="editTaskAlert"
+          class="alert-container"
+          style="margin-top: 0.75rem"
+        ></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <p>&copy; 2026 Portal Pembelajaran Daring. Modul Pengelolaan Guru.</p>
+      </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
