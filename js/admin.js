@@ -135,7 +135,7 @@ async function loadDashboardData() {
         "linear-gradient(90deg, var(--primary-600), var(--primary-500))";
     }
 
-    // Render Tabel Daftar Tugas
+    // 1. Render Tabel Daftar Tugas
     const taskTbody = document.getElementById("taskTableBody");
     taskTbody.innerHTML = "";
     if (currentTasksCache.length === 0) {
@@ -178,7 +178,7 @@ async function loadDashboardData() {
       });
     }
 
-    // Render Tabel Pengumpulan Siswa
+    // 2. Render Tabel Daftar Pengumpulan Tugas Siswa
     const subTbody = document.getElementById("submissionTableBody");
     subTbody.innerHTML = "";
     if (!res.submissions || res.submissions.length === 0) {
@@ -186,17 +186,14 @@ async function loadDashboardData() {
     } else {
       res.submissions.forEach((s) => {
         const sizeMb = (s.fileSize / (1024 * 1024)).toFixed(2);
-        const isDihapus = s.status === "Dihapus";
-        const statusBadge = isDihapus
-          ? `<span class="badge badge-danger"><i class="fa-solid fa-trash"></i> Dihapus</span>`
-          : `<span class="badge badge-success"><i class="fa-solid fa-paper-plane"></i> Terkirim</span>`;
+        const statusBadge = `<span class="badge badge-success"><i class="fa-solid fa-paper-plane"></i> Terkirim</span>`;
 
         subTbody.innerHTML += `
           <tr>
             <td style="font-size:0.8rem; color:var(--neutral-500);">${s.time}</td>
             <td style="font-weight:700; color:var(--neutral-900);">${s.nama} <small style="color:var(--neutral-500); font-weight:normal;">(${s.nis || "-"})</small></td>
             <td><span class="user-badge-item">${s.kelas}</span></td>
-            <td style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s.fileName}</td>
+            <td style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${s.fileName}">${s.fileName}</td>
             <td>${sizeMb} MB</td>
             <td>
               <a href="${s.driveLink}" target="_blank" style="color:var(--primary-600); font-weight:700; text-decoration:none;">
@@ -205,15 +202,9 @@ async function loadDashboardData() {
             </td>
             <td>${statusBadge}</td>
             <td>
-              ${
-                !isDihapus
-                  ? `
-                <button class="btn btn-outline-secondary btn-sm btn-delete-action" onclick="deleteFile(${s.rowIndex})">
-                  <i class="fa-solid fa-trash"></i> Hapus
-                </button>
-              `
-                  : '<span style="color:var(--neutral-400);">-</span>'
-              }
+              <button class="btn btn-outline-secondary btn-sm btn-delete-action" onclick="deleteFile(${s.rowIndex}, '${s.subId}')" title="Hapus File dari Drive & Sheet">
+                <i class="fa-solid fa-trash"></i> Hapus
+              </button>
             </td>
           </tr>
         `;
@@ -347,18 +338,22 @@ async function deleteTask(taskId, folderId) {
   }
 }
 
-async function deleteFile(rowIndex) {
+// FUNGSI HAPUS PENGUMPULAN TUGAS SISWA
+async function deleteFile(rowIndex, subId) {
   if (
     !confirm(
-      "Apakah Anda yakin ingin menghapus file pengumpulan ini dari Google Drive?",
+      "Apakah Anda yakin ingin menghapus file ini dari Google Drive dan menghapus baris datanya dari sheet pengumpulan?",
     )
   )
     return;
+
   const res = await apiRequest({
     action: "deleteSubmissionFile",
     token: adminToken,
     rowIndex: rowIndex,
+    subId: subId,
   });
+
   if (res.success) {
     alert(res.message);
     loadDashboardData();
